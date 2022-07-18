@@ -2,7 +2,7 @@
 
 ## Services
 ```bash
-spree:4000      @ 4.4.0  	- 1
+spree:4000      @ 4.4.0     - 1
 magento2:80/443 @ 2.4.4     - 2
 petstore:8080   @ 1.0.11    - 3
 ```
