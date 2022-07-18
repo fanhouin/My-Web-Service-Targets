@@ -1,0 +1,30 @@
+version: '3.1'
+services:
+  # http://localhost:8003/
+  # default user: admin , password: admin
+  redmine:
+    image: redmine:5.0.2
+    restart: always
+    ports:
+      - 8003:3000
+    environment:
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_PASSWORD: P@ssw0rd
+      REDMINE_SECRET_KEY_BASE: supersecretkey
+    volumes:
+      - redmine:/usr/src/redmine/files
+  db:
+    image: mysql:5.7
+    #在 redmine 使用時，遇到文字有中文時會有問題，故加入以下 command 這段
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
+      MYSQL_DATABASE: redmine
+    volumes:
+      - mysql:/var/lib/mysql
+volumes:
+  mysql:
+    driver: local
+  redmine:
+    driver: local

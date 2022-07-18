@@ -1,4 +1,6 @@
 version: '2'
+# http://localhost/admin
+# default user: admin , password: admin123
 services:
   mariadb:
     image: docker.io/bitnami/mariadb:10.4
