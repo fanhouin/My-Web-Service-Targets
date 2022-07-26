@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ $# -eq 0 ]
   then
-    echo "Usage: service_down.sh <service_num>
+    echo "Usage: service_up.sh <service_num>
 Service_num: 
 	petstore:8001   @ 1.0.11	- 1
 	spree:4000      @ 4.4.0 	- 2
