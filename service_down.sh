@@ -8,7 +8,8 @@ Service_num:
 	magento2:80/443 @ 2.4.4		- 3
 	gitlab:80/443 	@ 15.1.2	- 4
 	onos:8002   	@ 2.5.8		- 5
-	redmine:8003    @ 5.0.2		- 6"
+	redmine:8003    @ 5.0.2		- 6
+	realworld:8004  @ 728cb04	- 7"
 	exit 
 fi
 
@@ -35,6 +36,10 @@ case $1 in
 	;;
 6) 
 	cd redmine	&& \
+	docker-compose down
+	;;
+7)
+	cd realworld && \
 	docker-compose down
 	;;
 

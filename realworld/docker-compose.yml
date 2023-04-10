@@ -1,0 +1,8 @@
+version: "3"
+services:
+  go-real-world:
+    image: go-real-world
+    volumes:
+      - ./coverage:/app/coverage
+    ports:
+      - "8004:8080"
