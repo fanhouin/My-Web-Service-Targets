@@ -24,6 +24,7 @@ services:
       - MAGENTO_DATABASE_NAME=bitnami_magento
       - MAGENTO_USERNAME=admin
       - MAGENTO_PASSWORD=admin123
+      - MAGENTO_MODE=developer
       - ELASTICSEARCH_HOST=elasticsearch
       - ELASTICSEARCH_PORT_NUMBER=9200
       # ALLOW_EMPTY_PASSWORD is recommended only for development.

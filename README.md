@@ -1,6 +1,7 @@
 # My-Web-Service-Targets
 
 ## Services
+
 ```bash
 petstore:8001   @ 1.0.11	- 1
 spree:4000      @ 4.4.0 	- 2
@@ -12,6 +13,7 @@ realworld:8004  @ 728cb04   - 7
 ```
 
 ## Setup
+
 ```bash
 # for spree
 cd spree
@@ -27,6 +29,7 @@ bash setup.sh
 ```
 
 ## Usage
+
 ```bash
 # run the service
 service_up.sh <service_num>
