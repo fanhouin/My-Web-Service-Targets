@@ -12,7 +12,7 @@ import (
 
 func getLastTwoDigits(line string) int {
 	fields := strings.FieldsFunc(line, func(r rune) bool {
-		return r == '.' || r == ',' || r == ' '
+		return r == '.' || r == ',' || r == ' ' || r == ':'
 	})
 	times, err := strconv.Atoi(fields[len(fields)-1])
 	if err != nil {
@@ -21,39 +21,115 @@ func getLastTwoDigits(line string) int {
 	if times == 0 {
 		return 0
 	}
+	// fmt.Println(fields)
+	// fmt.Println(fields[3], fields[5])
 
-	coverage, err := strconv.Atoi(fields[len(fields)-2])
+	// coverage, err := strconv.Atoi(fields[len(fields)-2])
+	coverage1, err := strconv.Atoi(fields[3])
 	if err != nil {
 		panic(err)
 	}
-	return coverage
+	coverage2, err := strconv.Atoi(fields[5])
+	if err != nil {
+		panic(err)
+	}
+	return coverage2 - coverage1
 }
 
-func getRunLine(coverage string) int {
+// func getLastTwoDigits(line string) int {
+// 	fields := strings.FieldsFunc(line, func(r rune) bool {
+// 		return r == '.' || r == ',' || r == ' '
+// 	})
+// 	times, err := strconv.Atoi(fields[len(fields)-1])
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	if times == 0 {
+// 		return 0
+// 	}
+
+// 	coverage, err := strconv.Atoi(fields[len(fields)-2])
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	return coverage
+// }
+func getRunLine(coverage string) (int, int, int, int) {
 	coverage = strings.ReplaceAll(coverage, "\r", "")
 	lines := strings.Split(coverage, "\n")
-	count := 0
+	allCount := 0
+	articlesCount := 0
+	usersCount := 0
+	concatCount := 0
 	for _, line := range lines {
-		cov := strings.Split(line, " ")
-		if len(cov) < 3 {
+		fields := strings.FieldsFunc(line, func(r rune) bool {
+			return r == '.' || r == ',' || r == ' ' || r == ':'
+		})
+		if len(fields) < 3 {
 			continue
 		}
 
-		times, err := strconv.Atoi(cov[2])
+		times, err := strconv.Atoi(fields[len(fields)-1])
 		if err != nil {
 			panic(err)
 		}
 		if times == 0 {
 			continue
 		}
-		runLine, err := strconv.Atoi(cov[1])
+
+		names := strings.Split(fields[1], "/")
+		articlesLine := 0
+		usersLine := 0
+
+		coverage1, err := strconv.Atoi(fields[3])
 		if err != nil {
 			panic(err)
 		}
-		count += runLine
+		coverage2, err := strconv.Atoi(fields[5])
+		if err != nil {
+			panic(err)
+		}
+
+		allCoverage := (coverage2 - coverage1) + 1
+		if names[3] == "articles" {
+			articlesLine = allCoverage
+		} else if names[3] == "users" {
+			usersLine = allCoverage
+		}
+
+		allCount += allCoverage
+		concatCount += (articlesLine + usersLine)
+		articlesCount += articlesLine
+		usersCount += usersLine
 	}
-	return count
+	return allCount, concatCount, articlesCount, usersCount
 }
+
+// func getRunLine(coverage string) int {
+// 	coverage = strings.ReplaceAll(coverage, "\r", "")
+// 	lines := strings.Split(coverage, "\n")
+// 	count := 0
+// 	for _, line := range lines {
+// 		cov := strings.Split(line, " ")
+// 		if len(cov) < 3 {
+// 			continue
+// 		}
+
+// 		times, err := strconv.Atoi(cov[2])
+// 		if err != nil {
+// 			panic(err)
+// 		}
+// 		if times == 0 {
+// 			continue
+// 		}
+// 		runLine, err := strconv.Atoi(cov[1])
+// 		if err != nil {
+// 			panic(err)
+// 		}
+// 		count += runLine
+// 	}
+// 	return count
+// }
 
 func main() {
 	cmd := exec.Command("/bin/sh", "-c", "lsof -i -P -n | grep goc | grep LISTEN")
@@ -88,9 +164,9 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		count := getRunLine(string(out))
+		allCount, concatCount, articlesCount, usersCount := getRunLine(string(out))
 
-		log.Printf("%d %d", round, count)
+		log.Printf("%d %d %d %d %d", round, allCount, concatCount, articlesCount, usersCount)
 		round++
 		time.Sleep(1 * time.Second)
 	}
