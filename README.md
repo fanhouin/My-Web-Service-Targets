@@ -24,7 +24,7 @@ cd magento2/self_build
 docker build -t <your_name>/magento_test . # and follow the comments to complete the setting
 
 # for realworld self build
-cd golang-gin-realworld-example-app
+cd realworld
 bash setup.sh
 ```
 
